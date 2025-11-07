@@ -9,11 +9,17 @@ function initializeEmbeddedUI() {
         // Initialize UI Manager
         window.YTUIManager.initialize();
 
+        // Reset processed count for new page
+        lastProcessedCount = 0;
+
         // Add copy icons to videos
         window.YTCopyManager.addCopyIconsToVideos();
 
         // Add thumbnail download buttons
         window.YTThumbnailDownloader.addThumbnailDownloadButtons();
+
+        // Update count after initial processing
+        lastProcessedCount = window.YTDomUtils.findAllVideoElements().length;
 
         // Setup video observer for dynamic content
         setupVideoObserver();
@@ -23,45 +29,118 @@ function initializeEmbeddedUI() {
     }
 }
 
+// Global observer instance
+let videoObserver = null;
+let updateTimeout = null;
+let lastProcessedCount = 0;
+
+/**
+ * Process new videos that haven't been processed yet
+ */
+function processNewVideos() {
+    try {
+        // Get all current video elements
+        const allVideos = window.YTDomUtils.findAllVideoElements();
+        const currentCount = allVideos.length;
+
+        // Only process if there are new videos
+        if (currentCount > lastProcessedCount) {
+            // Process all videos (the managers will skip already processed ones)
+            window.YTCopyManager.addCopyIconsToVideos();
+            window.YTThumbnailDownloader.addThumbnailDownloadButtons();
+            lastProcessedCount = currentCount;
+        }
+    } catch (error) {
+        console.error('❌ Error processing new videos:', error);
+    }
+}
+
+/**
+ * Debounced function to process videos
+ */
+function debouncedProcessVideos() {
+    // Clear existing timeout
+    if (updateTimeout) {
+        clearTimeout(updateTimeout);
+    }
+
+    // Set new timeout (wait a bit for YouTube to finish loading)
+    updateTimeout = setTimeout(() => {
+        processNewVideos();
+    }, 800);
+}
+
 /**
  * Setup observer for dynamically loaded videos
  */
 function setupVideoObserver() {
     try {
+        // Disconnect existing observer if any
+        if (videoObserver) {
+            videoObserver.disconnect();
+        }
+
         // Create observer to watch for new video elements
-        const observer = new MutationObserver((mutations) => {
-            let shouldUpdate = false;
+        videoObserver = new MutationObserver((mutations) => {
+            let hasNewVideos = false;
 
             mutations.forEach((mutation) => {
-                if (mutation.type === 'childList') {
+                if (mutation.type === 'childList' && mutation.addedNodes.length > 0) {
                     mutation.addedNodes.forEach((node) => {
                         if (node.nodeType === Node.ELEMENT_NODE) {
-                            // Check if new video elements were added
+                            // Check if the node itself is a video container
                             if (node.matches && window.YTDomUtils.YOUTUBE_SELECTORS.VIDEO_CONTAINERS.some(selector => node.matches(selector))) {
-                                shouldUpdate = true;
+                                hasNewVideos = true;
                             }
                             // Check if node contains video elements
-                            if (node.querySelectorAll && window.YTDomUtils.YOUTUBE_SELECTORS.VIDEO_CONTAINERS.some(selector => node.querySelectorAll(selector).length > 0)) {
-                                shouldUpdate = true;
+                            else if (node.querySelectorAll) {
+                                for (const selector of window.YTDomUtils.YOUTUBE_SELECTORS.VIDEO_CONTAINERS) {
+                                    if (node.querySelector(selector)) {
+                                        hasNewVideos = true;
+                                        break;
+                                    }
+                                }
                             }
                         }
                     });
                 }
             });
 
-            if (shouldUpdate) {
-                setTimeout(() => {
-                    window.YTCopyManager.addCopyIconsToVideos();
-                    window.YTThumbnailDownloader.addThumbnailDownloadButtons();
-                }, 500);
+            if (hasNewVideos) {
+                debouncedProcessVideos();
             }
         });
 
-        // Start observing
-        observer.observe(document.body, {
+        // Start observing the entire document body with subtree
+        videoObserver.observe(document.body, {
             childList: true,
-            subtree: true
+            subtree: true,
+            attributes: false,
+            characterData: false
         });
+
+        // Also listen for scroll events (YouTube uses infinite scroll)
+        let scrollTimeout = null;
+        window.addEventListener('scroll', () => {
+            if (scrollTimeout) {
+                clearTimeout(scrollTimeout);
+            }
+            scrollTimeout = setTimeout(() => {
+                // Check for new videos after scrolling
+                const currentCount = window.YTDomUtils.findAllVideoElements().length;
+                if (currentCount > lastProcessedCount) {
+                    debouncedProcessVideos();
+                }
+            }, 1000);
+        }, { passive: true });
+
+        // Periodic check as a fallback (every 3 seconds)
+        setInterval(() => {
+            const currentCount = window.YTDomUtils.findAllVideoElements().length;
+            if (currentCount > lastProcessedCount) {
+                processNewVideos();
+            }
+        }, 3000);
 
     } catch (error) {
         console.error('❌ Error setting up video observer:', error);
@@ -80,6 +159,21 @@ function checkForNavigation() {
             window.YTUIManager.cleanup();
             window.YTCopyManager.removeAllCopyIcons();
             window.YTThumbnailDownloader.removeAllDownloadButtons();
+
+            // Reset count for new page
+            lastProcessedCount = 0;
+
+            // Disconnect existing observer
+            if (videoObserver) {
+                videoObserver.disconnect();
+                videoObserver = null;
+            }
+
+            // Clear any pending timeouts
+            if (updateTimeout) {
+                clearTimeout(updateTimeout);
+                updateTimeout = null;
+            }
 
             // Wait a bit for page to settle, then reinitialize
             setTimeout(() => {
