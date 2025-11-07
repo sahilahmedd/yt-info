@@ -13,7 +13,7 @@ A powerful Chrome extension that extracts YouTube video information and provides
 
 ## 📸 Screenshots
 
-*Screenshots coming soon*
+_Screenshots coming soon_
 
 ## 🚀 Installation
 
@@ -29,21 +29,30 @@ A powerful Chrome extension that extracts YouTube video information and provides
 If you want to install the extension manually from source:
 
 1. **Download the Extension**
-   - Clone this repository:
+
+   - **Option A: Download ZIP** (Recommended for non-developers)
+
+     - Click here to download: [📦 Download ZIP](https://github.com/sahilahmedd/yt-info/archive/refs/heads/main.zip)
+     - Or visit the repository and click the green **"Code"** button → **"Download ZIP"**
+     - Extract the ZIP file to a folder on your computer
+
+   - **Option B: Clone with Git** (For developers)
      ```bash
      git clone https://github.com/sahilahmedd/yt-info.git
      ```
-   - Or download the ZIP file and extract it
 
 2. **Open Chrome Extensions Page**
+
    - Open Google Chrome
    - Navigate to `chrome://extensions/`
    - Or go to **Menu (⋮)** → **Extensions** → **Manage Extensions**
 
 3. **Enable Developer Mode**
+
    - Toggle the **"Developer mode"** switch in the top-right corner
 
 4. **Load the Extension**
+
    - Click **"Load unpacked"** button
    - Select the folder containing the extension files (the folder with `manifest.json`)
    - The extension will appear in your extensions list
@@ -55,13 +64,16 @@ If you want to install the extension manually from source:
 ## 📖 Usage
 
 1. **Navigate to YouTube**
+
    - Go to any YouTube video page (e.g., `https://www.youtube.com/watch?v=VIDEO_ID`)
 
 2. **Access the Extension**
+
    - Look for the **"YT Info"** button in the YouTube header (to the right of the search bar)
    - The button has a blue gradient background with a 🎬 icon
 
 3. **Extract Video Information**
+
    - Click the **"YT Info"** button to open the dropdown
    - The extension will automatically extract:
      - Video Title
@@ -72,10 +84,12 @@ If you want to install the extension manually from source:
      - Video URL
 
 4. **Download Thumbnails**
+
    - Click on any thumbnail resolution button to download
    - Available resolutions: Max Quality, High Quality, Medium Quality, Standard Quality
 
 5. **Copy Information**
+
    - Click the **"Copy"** button next to any information field to copy it to your clipboard
    - A confirmation message will appear when copied successfully
 
@@ -179,6 +193,7 @@ Found a bug or have a feature request? Please open an issue on [GitHub Issues](h
 ## 📧 Support
 
 For support, questions, or suggestions:
+
 - Open an issue on GitHub
 - Check existing issues for solutions
 
