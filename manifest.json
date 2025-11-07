@@ -1,0 +1,27 @@
+{
+  "manifest_version": 3,
+  "name": "YouTube Video Info Extractor",
+  "version": "1.0.0",
+  "description": "Extract YouTube video titles, views, and upload dates with easy copy functionality - embedded directly in YouTube",
+  "permissions": ["activeTab", "scripting", "storage"],
+  "host_permissions": ["https://www.youtube.com/*"],
+  "content_scripts": [
+    {
+      "matches": ["https://www.youtube.com/*"],
+      "js": [
+        "modules/dom-utils.js",
+        "modules/ui-manager.js", 
+        "modules/video-extractor.js",
+        "modules/thumbnail-downloader.js",
+        "modules/copy-manager.js",
+        "content.js"
+      ],
+      "run_at": "document_end"
+    }
+  ],
+  "icons": {
+    "16": "icons/icon16.png",
+    "48": "icons/icon48.png",
+    "128": "icons/icon128.png"
+  }
+}

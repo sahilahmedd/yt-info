@@ -1,0 +1,47 @@
+{
+  "name": "youtube-video-info-extractor",
+  "version": "1.0.0",
+  "description": "A Chrome extension to extract YouTube video information including titles, views, upload dates, and channel names with easy copy functionality and CSV export",
+  "main": "popup.html",
+  "scripts": {
+    "build": "echo 'Chrome extension - no build step required'",
+    "test": "echo 'Open generate-icons.html in browser to test icon generation'",
+    "package": "echo 'Load unpacked extension in Chrome'",
+    "icons": "echo 'Open generate-icons.html in browser to generate icons'"
+  },
+  "keywords": [
+    "chrome-extension",
+    "youtube",
+    "video-extraction",
+    "data-extraction",
+    "content-scraping",
+    "csv-export",
+    "copy-to-clipboard"
+  ],
+  "author": "Your Name",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/yourusername/youtube-video-info-extractor.git"
+  },
+  "bugs": {
+    "url": "https://github.com/yourusername/youtube-video-info-extractor/issues"
+  },
+  "homepage": "https://github.com/yourusername/youtube-video-info-extractor#readme",
+  "engines": {
+    "chrome": ">=88.0.0"
+  },
+  "manifest": {
+    "version": 3,
+    "permissions": [
+      "activeTab",
+      "scripting",
+      "storage"
+    ],
+    "host_permissions": [
+      "https://www.youtube.com/*"
+    ]
+  },
+  "devDependencies": {},
+  "dependencies": {}
+}
