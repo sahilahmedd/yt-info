@@ -95,34 +95,46 @@ class VideoExtractor {
      */
     extractViews(video) {
         try {
-            // Find the metadata-line element (inside ytd-video-meta-block)
-            const videoMetaBlock = video.querySelector('ytd-video-meta-block');
-            if (!videoMetaBlock) {
-                return 'N/A';
-            }
-
-            const metadataLine = videoMetaBlock.querySelector('#metadata-line');
-            if (!metadataLine) {
-                return 'N/A';
-            }
-
-            // Find all inline-metadata-item spans
-            const metadataItems = metadataLine.querySelectorAll('span.inline-metadata-item');
-
-            // Look for the one that contains "view" or "views"
-            for (const item of metadataItems) {
-                const text = item.textContent.trim();
-                if (text && (text.toLowerCase().includes('view') || text.match(/\d+[KMB]?\s*views?/i))) {
-                    return text;
+            // Method 1: Home page structure (yt-content-metadata-view-model)
+            const contentMetadata = video.querySelector('yt-content-metadata-view-model');
+            if (contentMetadata) {
+                const metadataRows = contentMetadata.querySelectorAll('.yt-content-metadata-view-model__metadata-row');
+                for (const row of metadataRows) {
+                    // Get all spans with text content (excluding delimiter)
+                    const spans = row.querySelectorAll('span.yt-core-attributed-string[role="text"]');
+                    for (const span of spans) {
+                        const text = span.textContent.trim();
+                        // Check if it contains views (e.g., "32K views")
+                        // Views typically appear first in the row
+                        if (text && (text.toLowerCase().includes('view') || text.match(/\d+[KMB]?\s*views?/i))) {
+                            return text;
+                        }
+                    }
                 }
             }
 
-            // Fallback: try to find any span with "view" in text within metadata-line
-            const allSpans = metadataLine.querySelectorAll('span');
-            for (const span of allSpans) {
-                const text = span.textContent.trim();
-                if (text && text.toLowerCase().includes('view')) {
-                    return text;
+            // Method 2: Watch page structure (ytd-video-meta-block)
+            const videoMetaBlock = video.querySelector('ytd-video-meta-block');
+            if (videoMetaBlock) {
+                const metadataLine = videoMetaBlock.querySelector('#metadata-line');
+                if (metadataLine) {
+                    // Find all inline-metadata-item spans
+                    const metadataItems = metadataLine.querySelectorAll('span.inline-metadata-item');
+                    for (const item of metadataItems) {
+                        const text = item.textContent.trim();
+                        if (text && (text.toLowerCase().includes('view') || text.match(/\d+[KMB]?\s*views?/i))) {
+                            return text;
+                        }
+                    }
+
+                    // Fallback: try to find any span with "view" in text within metadata-line
+                    const allSpans = metadataLine.querySelectorAll('span');
+                    for (const span of allSpans) {
+                        const text = span.textContent.trim();
+                        if (text && text.toLowerCase().includes('view')) {
+                            return text;
+                        }
+                    }
                 }
             }
 
@@ -138,39 +150,52 @@ class VideoExtractor {
      */
     extractUploadDate(video) {
         try {
-            // Find the metadata-line element (inside ytd-video-meta-block)
-            const videoMetaBlock = video.querySelector('ytd-video-meta-block');
-            if (!videoMetaBlock) {
-                return 'N/A';
-            }
-
-            const metadataLine = videoMetaBlock.querySelector('#metadata-line');
-            if (!metadataLine) {
-                return 'N/A';
-            }
-
-            // Find all inline-metadata-item spans
-            const metadataItems = metadataLine.querySelectorAll('span.inline-metadata-item');
-
             // Time-related keywords
             const timeKeywords = ['ago', 'day', 'week', 'month', 'year', 'hour', 'minute', 'second'];
 
-            // Look for the one that contains time-related keywords
-            for (const item of metadataItems) {
-                const text = item.textContent.trim();
-                const lowerText = text.toLowerCase();
-                if (text && timeKeywords.some(keyword => lowerText.includes(keyword))) {
-                    return text;
+            // Method 1: Home page structure (yt-content-metadata-view-model)
+            const contentMetadata = video.querySelector('yt-content-metadata-view-model');
+            if (contentMetadata) {
+                const metadataRows = contentMetadata.querySelectorAll('.yt-content-metadata-view-model__metadata-row');
+                for (const row of metadataRows) {
+                    // Get all spans with text content (excluding delimiter)
+                    const spans = row.querySelectorAll('span.yt-core-attributed-string[role="text"]');
+                    for (const span of spans) {
+                        const text = span.textContent.trim();
+                        const lowerText = text.toLowerCase();
+                        // Check if it contains time-related keywords (e.g., "2 days ago")
+                        // Time typically appears after views in the same row
+                        if (text && timeKeywords.some(keyword => lowerText.includes(keyword))) {
+                            return text;
+                        }
+                    }
                 }
             }
 
-            // Fallback: try to find any span with time-related text within metadata-line
-            const allSpans = metadataLine.querySelectorAll('span');
-            for (const span of allSpans) {
-                const text = span.textContent.trim();
-                const lowerText = text.toLowerCase();
-                if (text && timeKeywords.some(keyword => lowerText.includes(keyword))) {
-                    return text;
+            // Method 2: Watch page structure (ytd-video-meta-block)
+            const videoMetaBlock = video.querySelector('ytd-video-meta-block');
+            if (videoMetaBlock) {
+                const metadataLine = videoMetaBlock.querySelector('#metadata-line');
+                if (metadataLine) {
+                    // Find all inline-metadata-item spans
+                    const metadataItems = metadataLine.querySelectorAll('span.inline-metadata-item');
+                    for (const item of metadataItems) {
+                        const text = item.textContent.trim();
+                        const lowerText = text.toLowerCase();
+                        if (text && timeKeywords.some(keyword => lowerText.includes(keyword))) {
+                            return text;
+                        }
+                    }
+
+                    // Fallback: try to find any span with time-related text within metadata-line
+                    const allSpans = metadataLine.querySelectorAll('span');
+                    for (const span of allSpans) {
+                        const text = span.textContent.trim();
+                        const lowerText = text.toLowerCase();
+                        if (text && timeKeywords.some(keyword => lowerText.includes(keyword))) {
+                            return text;
+                        }
+                    }
                 }
             }
 
