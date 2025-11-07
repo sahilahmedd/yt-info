@@ -194,8 +194,9 @@ Found a bug or have a feature request? Please open an issue on [GitHub Issues](h
 
 For support, questions, or suggestions:
 
-- Open an issue on GitHub
+- Open an issue on [GitHub Issues](https://github.com/sahilahmedd/yt-info/issues)
 - Check existing issues for solutions
+- Send feedback or suggest more features via [WhatsApp](https://wa.me/919413966915)
 
 ## 🎉 Acknowledgments
 
@@ -206,5 +207,15 @@ For support, questions, or suggestions:
 ---
 
 **Made with ❤️ for YouTube users**
+
+---
+
+## © Copyright
+
+**Made by [Sahil Ahmed](https://wa.me/919413966915)**
+
+Send feedback or suggest more features: [WhatsApp](https://wa.me/919413966915)
+
+---
 
 Version: 1.0.0
