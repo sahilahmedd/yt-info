@@ -18,8 +18,6 @@ class CopyManager {
             videoElements.forEach(video => {
                 this.addCopyIconToVideo(video);
             });
-
-            console.log(`Added copy icons to ${videoElements.length} videos`);
         } catch (error) {
             console.error('Error adding copy icons:', error);
         }
@@ -235,7 +233,6 @@ class CopyManager {
             const copyIcons = document.querySelectorAll('.yt-info-webpage-copy-icon');
             copyIcons.forEach(icon => icon.remove());
             this.copyIconsAdded.clear();
-            console.log('Removed all copy icons');
         } catch (error) {
             console.error('Error removing copy icons:', error);
         }

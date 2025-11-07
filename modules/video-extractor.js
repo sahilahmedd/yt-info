@@ -44,8 +44,6 @@ class VideoExtractor {
                 'success'
             );
 
-            console.log('Extracted videos:', this.extractedVideos);
-
         } catch (error) {
             console.error('Error extracting videos:', error);
             window.YTUIManager.showStatus('Error extracting videos. Please try again.', 'error');
@@ -209,30 +207,7 @@ class VideoExtractor {
      * Debug video detection
      */
     debugVideoDetection() {
-        console.log('=== Video Detection Debug ===');
-
-        const videoElements = window.YTDomUtils.findAllVideoElements();
-        console.log(`Total video elements found: ${videoElements.length}`);
-
-        videoElements.forEach((video, index) => {
-            console.log(`\n--- Video ${index + 1} ---`);
-
-            const titleElement = window.YTDomUtils.findTitleElement(video);
-            console.log('Title element:', titleElement);
-            console.log('Title text:', titleElement ? titleElement.textContent : 'N/A');
-
-            const thumbnailContainer = window.YTDomUtils.findThumbnailContainer(video);
-            console.log('Thumbnail container:', thumbnailContainer);
-
-            const imageElement = thumbnailContainer ? window.YTDomUtils.findImageElement(thumbnailContainer) : null;
-            console.log('Image element:', imageElement);
-            console.log('Image src:', imageElement ? imageElement.src : 'N/A');
-
-            const videoId = imageElement ? window.YTDomUtils.extractVideoId(imageElement.src) : 'N/A';
-            console.log('Extracted video ID:', videoId);
-        });
-
-        console.log('=== End Debug ===');
+        // Debug functionality removed for production
     }
 }
 

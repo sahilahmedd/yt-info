@@ -6,8 +6,6 @@
 // Main initialization function
 function initializeEmbeddedUI() {
     try {
-        console.log('🎬 Initializing YouTube Info Extractor...');
-
         // Initialize UI Manager
         window.YTUIManager.initialize();
 
@@ -17,13 +15,8 @@ function initializeEmbeddedUI() {
         // Add thumbnail download buttons
         window.YTThumbnailDownloader.addThumbnailDownloadButtons();
 
-        // Debug thumbnail detection
-        debugThumbnailDetection();
-
         // Setup video observer for dynamic content
         setupVideoObserver();
-
-        console.log('✅ YouTube Info Extractor initialized successfully!');
 
     } catch (error) {
         console.error('❌ Error initializing YouTube Info Extractor:', error);
@@ -57,7 +50,6 @@ function setupVideoObserver() {
             });
 
             if (shouldUpdate) {
-                console.log('🔄 New videos detected, updating UI...');
                 setTimeout(() => {
                     window.YTCopyManager.addCopyIconsToVideos();
                     window.YTThumbnailDownloader.addThumbnailDownloadButtons();
@@ -71,47 +63,11 @@ function setupVideoObserver() {
             subtree: true
         });
 
-        console.log('👀 Video observer setup complete');
-
     } catch (error) {
         console.error('❌ Error setting up video observer:', error);
     }
 }
 
-/**
- * Debug thumbnail detection
- */
-function debugThumbnailDetection() {
-    try {
-        console.log('🔍 Debugging thumbnail detection...');
-
-        const videoElements = window.YTDomUtils.findAllVideoElements();
-        console.log(`📹 Total video elements found: ${videoElements.length}`);
-
-        videoElements.forEach((video, index) => {
-            console.log(`\n--- Video ${index + 1} ---`);
-
-            const titleElement = window.YTDomUtils.findTitleElement(video);
-            console.log('📝 Title element:', titleElement);
-            console.log('📝 Title text:', titleElement ? titleElement.textContent : 'N/A');
-
-            const thumbnailContainer = window.YTDomUtils.findThumbnailContainer(video);
-            console.log('🖼️ Thumbnail container:', thumbnailContainer);
-
-            const imageElement = thumbnailContainer ? window.YTDomUtils.findImageElement(thumbnailContainer) : null;
-            console.log('🖼️ Image element:', imageElement);
-            console.log('🖼️ Image src:', imageElement ? imageElement.src : 'N/A');
-
-            const videoId = imageElement ? window.YTDomUtils.extractVideoId(imageElement.src) : 'N/A';
-            console.log('🆔 Extracted video ID:', videoId);
-        });
-
-        console.log('🔍 End thumbnail detection debug');
-
-    } catch (error) {
-        console.error('❌ Error in thumbnail detection debug:', error);
-    }
-}
 
 /**
  * Check for YouTube navigation and reinitialize
@@ -120,8 +76,6 @@ function checkForNavigation() {
     try {
         // Check if we're on a YouTube page
         if (window.location.hostname === 'www.youtube.com') {
-            console.log('🔄 YouTube navigation detected, reinitializing...');
-
             // Clean up existing UI
             window.YTUIManager.cleanup();
             window.YTCopyManager.removeAllCopyIcons();
@@ -164,9 +118,6 @@ if (document.readyState === 'loading') {
 // Fallback initialization for YouTube SPA
 setInterval(() => {
     if (!window.YTUIManager || !window.YTUIManager.isInitialized) {
-        console.log('🔄 Fallback initialization check...');
         initializeEmbeddedUI();
     }
 }, 5000);
-
-console.log('🚀 YouTube Info Extractor content script loaded!');

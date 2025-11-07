@@ -40,11 +40,8 @@ class UIManager {
         // Find the search bar container in YouTube header
         const searchContainer = this.findSearchContainer();
         if (!searchContainer || this.embeddedUI) {
-            console.log('Search container not found or UI already exists');
             return;
         }
-
-        console.log('Found search container:', searchContainer);
 
         // Create main container
         this.embeddedUI = document.createElement('div');
@@ -54,65 +51,45 @@ class UIManager {
         // Insert the extension button in the center section after the search box
         const centerSection = document.querySelector('#center');
         if (centerSection) {
-            console.log('Found center section:', centerSection);
-
             // Insert after the search box but before the voice search button
             const voiceSearchButton = centerSection.querySelector('#voice-search-button');
             if (voiceSearchButton) {
-                console.log('Inserting before voice search button');
                 centerSection.insertBefore(this.embeddedUI, voiceSearchButton);
             } else {
                 // Fallback: insert at the end of center section
-                console.log('Inserting at end of center section');
                 centerSection.appendChild(this.embeddedUI);
             }
         } else {
             // Fallback: insert after the search container
-            console.log('Center section not found, using fallback positioning');
             searchContainer.parentNode.insertBefore(this.embeddedUI, searchContainer.nextSibling);
         }
-
-        console.log('UI inserted successfully');
 
         // Add event listeners
         this.setupEventListeners();
     }
 
     /**
- * Find the search container in YouTube header
- */
+     * Find the search container in YouTube header
+     */
     findSearchContainer() {
-        console.log('Searching for search container...');
-
         // Primary: Look for the YouTube searchbox in the center section
         const searchBox = document.querySelector('yt-searchbox');
         if (searchBox) {
-            console.log('Found yt-searchbox:', searchBox);
             return searchBox;
         }
 
         // Fallback: Look for the search form in YouTube header
         const searchForm = document.querySelector('#search-form');
         if (searchForm) {
-            console.log('Found search form:', searchForm);
             return searchForm.closest('div') || searchForm.parentElement;
         }
 
         // Fallback: look for search input
         const searchInput = document.querySelector('#search, #search-input');
         if (searchInput) {
-            console.log('Found search input:', searchInput);
             return searchInput.closest('div') || searchInput.parentElement;
         }
 
-        // Additional fallback for test environment
-        const testSearchContainer = document.querySelector('.search-container');
-        if (testSearchContainer) {
-            console.log('Found test search container:', testSearchContainer);
-            return testSearchContainer;
-        }
-
-        console.log('No search container found');
         return null;
     }
 
@@ -139,10 +116,6 @@ class UIManager {
                         <button id="yt-info-extract-btn" class="yt-info-btn yt-info-primary">
                             <span class="yt-info-btn-icon">📊</span>
                             Extract Videos
-                        </button>
-                        <button id="yt-info-test-btn" class="yt-info-btn yt-info-secondary">
-                            <span class="yt-info-btn-icon">🧪</span>
-                            Test
                         </button>
                     </div>
                     
@@ -222,17 +195,6 @@ class UIManager {
         if (extractBtn) {
             extractBtn.addEventListener('click', () => {
                 window.YTVideoExtractor.extractVideos();
-            });
-        }
-
-        // Test button
-        const testBtn = this.embeddedUI.querySelector('#yt-info-test-btn');
-        if (testBtn) {
-            testBtn.addEventListener('click', () => {
-                this.showStatus('Testing functionality...', 'info');
-                setTimeout(() => {
-                    this.showStatus('Test completed successfully!', 'success');
-                }, 1000);
             });
         }
 
