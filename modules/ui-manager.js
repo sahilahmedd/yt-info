@@ -177,6 +177,19 @@ class UIManager {
                             </button>
                         </div>
                     </div>
+                    
+                    <div class="yt-info-footer">
+                        <div class="yt-info-footer-content">
+                            <div class="yt-info-copyright">
+                                Made by <a href="https://wa.me/919413966915" target="_blank" class="yt-info-footer-link">Sahil Ahmed</a>
+                            </div>
+                            <div class="yt-info-feedback">
+                                <a href="https://wa.me/919413966915" target="_blank" class="yt-info-footer-link yt-info-feedback-link">
+                                    💬 Send Feedback or Suggest Features
+                                </a>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         `;
@@ -837,6 +850,62 @@ class UIManager {
             
             .yt-info-webpage-copy-icon:focus {
                 outline: none !important;
+            }
+            
+            /* Footer Styles */
+            .yt-info-footer {
+                border-top: 1px solid rgba(255, 255, 255, 0.1) !important;
+                padding-top: 15px !important;
+                margin-top: 20px !important;
+            }
+            
+            .yt-info-footer-content {
+                display: flex !important;
+                flex-direction: column !important;
+                gap: 10px !important;
+                align-items: center !important;
+                text-align: center !important;
+            }
+            
+            .yt-info-copyright {
+                color: #94a3b8 !important;
+                font-size: 12px !important;
+                font-weight: 400 !important;
+            }
+            
+            .yt-info-footer-link {
+                color: #3b82f6 !important;
+                text-decoration: none !important;
+                font-weight: 500 !important;
+                transition: all 0.2s ease !important;
+            }
+            
+            .yt-info-footer-link:hover {
+                color: #60a5fa !important;
+                text-decoration: underline !important;
+            }
+            
+            .yt-info-feedback {
+                margin-top: 5px !important;
+            }
+            
+            .yt-info-feedback-link {
+                display: inline-flex !important;
+                align-items: center !important;
+                gap: 6px !important;
+                padding: 6px 12px !important;
+                background: rgba(59, 130, 246, 0.1) !important;
+                border: 1px solid rgba(59, 130, 246, 0.3) !important;
+                border-radius: 6px !important;
+                font-size: 12px !important;
+                transition: all 0.2s ease !important;
+            }
+            
+            .yt-info-feedback-link:hover {
+                background: rgba(59, 130, 246, 0.2) !important;
+                border-color: rgba(59, 130, 246, 0.5) !important;
+                transform: translateY(-1px) !important;
+                text-decoration: none !important;
             }
         `;
     }
